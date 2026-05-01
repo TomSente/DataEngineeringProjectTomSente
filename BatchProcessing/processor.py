@@ -2,6 +2,8 @@ import numpy as np
 import pandas as pd
 
 def process_taxi_data(df):
+    df = df.copy()
+
     # Removal of VendorID, store_and_fwd_flag and RatecodeID columns
     df = df.drop(columns=['VendorID', 'store_and_fwd_flag', 'RatecodeID'], errors='ignore')
     print("Processor: Successfull Removal of Columns: VendorID, store_and_fwd_flag, RatecodeID")
