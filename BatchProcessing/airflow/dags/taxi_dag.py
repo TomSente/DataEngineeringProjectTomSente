@@ -5,7 +5,7 @@ import sys
 
 # Import your function from the script above
 # sys.path.append('/path/to/your/script')
-# from taxi_pipeline import run_taxi_pipeline
+from taxi_pipeline import run_taxi_pipeline
 
 default_args = {
     'owner': 'student',
@@ -24,6 +24,7 @@ with DAG(
         python_callable=run_taxi_pipeline,
         op_kwargs={
             'input_path': 'yellow_tripdata_2025-01.parquet',
+            'local_input_path':'./input/yellow_tripdata_2025-01.parquet',
             'local_output_path': './output/processed_taxi_data.parquet',
             'azure_conn_str': 'YOUR_AZURE_CONNECTION_STRING',
             'container_name': 'taxi-data'

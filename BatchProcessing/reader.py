@@ -1,5 +1,6 @@
 import pandas as pd
 
-def read_taxi_data(input_path):
+def read_taxi_data(local_input_path):
     """Reads taxi data from a parquet file."""
-    return pd.read_parquet(input_path)
+    print("Reading Complete")
+    return pd.read_parquet(local_input_path)

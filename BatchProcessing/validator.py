@@ -10,10 +10,11 @@ def validate_taxi_data(df):
     initial_count = len(df)
     df = df.dropna(subset=mandatory_cols)
     df = df[(df['trip_distance'] >= 0) & (df['total_amount'] >= 0)]
-    print(f"Validation complete. Rows removed: {initial_count - len(df)}")
+    print(f"Validation Complete: Rows removed: {initial_count - len(df)}")
     return df
 
 def backup_validate(df):
     """Back-up validation to replace inf values with 0."""
     df.replace([np.inf, -np.inf], 0, inplace=True)
+    print("Backup Validation Complete")
     return df
