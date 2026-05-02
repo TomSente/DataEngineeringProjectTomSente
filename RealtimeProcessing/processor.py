@@ -1,14 +1,52 @@
 import pandas as pd
+import ast
+
+def parse(value):
+    if isinstance(value, dict):
+        return value
+    if isinstance(value, str):
+        try:
+            return ast.literal_eval(value)
+        except (ValueError, SyntaxError):
+            return {}
+    return {}
 
 def process_data(df):
     """Creates extra columns and removes duplicates."""
     # Example extra columns
     print("DataFrame columns:", list(df.columns))
-    print("First row of DataFrame:\n", df.head(1))
-    df['crew_min'] = df['crew'].apply(lambda x: x.get('min') if isinstance(x, dict) else None)
-    df['crew_max'] = df['crew'].apply(lambda x: x.get('max') if isinstance(x, dict) else None)
+    df['crew_min'] = df['crew'].apply(lambda x: parse(x).get("min"))
+    df['crew_max'] = df['crew'].apply(lambda x: parse(x).get("max"))
     df['crew_range'] = df['crew_max'] - df['crew_min']
-    df['is_cargo'] = df['cargo_capacity'] > 0
-    df['speed_ratio'] = df['afterburner_speed'] / df['scm_speed'].replace(0, 1)
-    df = df.drop_duplicates()
+    df['can_carry_cargo'] = df['cargo_capacity'] > 0
+
+    df["production_status"] = df["production_status"].apply(lambda x: parse(x).get("en_EN"))
+
+    df["production_note"] = df["production_note"].apply(lambda x: parse(x).get("en_EN"))
+
+    df["type"] = df["type"].apply(lambda x: parse(x).get("en_EN"))
+
+    df["description"] = df["description"].apply(lambda x: parse(x).get("en_EN"))
+
+    df["size"] = df["size"].apply(lambda x: parse(x).get("en_EN"))
+
+
+
+    df["manufacturer_code"] = df["manufacturer"].apply(lambda x: parse(x).get("code"))
+
+    df["manufacturer_name"] = df["manufacturer"].apply(lambda x: parse(x).get("name"))
+
+    df["foci"] = df["foci"].apply(lambda x: parse(x)[0].get("en_EN"))
+
+    df["loaner"] = df["loaner"].apply(lambda x: parse(x)[0].get("name") if len(parse(x))>0 else None)
+
+    df["speed"] = df["speed"].apply(lambda x: parse(x).get("scm"))
+
+    df.rename(columns={"msrp":"manufacturer_suggested_retail_price"},inplace=True)
+
+    df = df.drop(columns = ["manufacturer","agility"])
+
+    # df['speed_ratio'] = df['afterburner_speed'] / df['scm_speed'].replace(0, 1)
+    # df = df.drop_duplicates()
+    print("DataFrame columns:", list(df.columns))
     return df

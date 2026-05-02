@@ -3,7 +3,7 @@ import time
 import requests
 import pandas as pd
 from reader import read_data,fetch_and_save_data
-from validator import validate_data, backup_validate
+from validator import validate_ship_data, backup_validate
 from processor import process_data
 from writer import write_local, write_azure
 
@@ -32,7 +32,7 @@ def monitor_folder(input_folder, output_folder, azure_conn_str, container_name, 
                 file_path = os.path.join(input_folder, fname).replace("\\", "/")
                 print(f"Processing new file: {file_path}")
                 df = read_data(file_path)
-                df = validate_data(df)
+                df = validate_ship_data(df)
                 df = process_data(df)
                 df = backup_validate(df)
                 output_path = os.path.join(output_folder, fname.replace('.xlsx', '.csv'))
@@ -42,8 +42,8 @@ def monitor_folder(input_folder, output_folder, azure_conn_str, container_name, 
         time.sleep(poll_interval)
 
 if __name__ == "__main__":
-    input_folder = "D:\Education\AcademieJaar_2025_2026\Semester_2\DATAENG\DataEngineeringProjectTomSente\RealtimeProcessing\input"
-    output_folder = "D:\Education\AcademieJaar_2025_2026\Semester_2\DATAENG\DataEngineeringProjectTomSente\RealtimeProcessing\output"
+    input_folder = "./input"
+    output_folder = "./output"
     api_url = "https://api.star-citizen.wiki/api/shipmatrix/vehicles"
     file_name = "api_ships.csv"
     azure_conn_str = ""

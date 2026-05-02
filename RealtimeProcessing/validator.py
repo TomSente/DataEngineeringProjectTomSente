@@ -1,26 +1,55 @@
-def validate_data(df):
-    print("Validate print columns:",df.columns)
-    """Validates each column based on custom rules."""
-    # Example rules, adjust as needed for your dataset
-    rules = {
-        'name': lambda x: isinstance(x, str) and len(x) > 0,
-        'manufacturer': lambda x: isinstance(x, str) and len(x) > 0,
-        'size': lambda x: x in ['Small', 'Medium', 'Large', 'Capital'],
-        'length': lambda x: x > 0,
-        'mass': lambda x: x >= 0,
-        'cargo_capacity': lambda x: x >= 0,
-        'crew_min': lambda x: x >= 0,
-        'crew_max': lambda x: x >= 0,
-        'scm_speed': lambda x: x >= 0,
-        'afterburner_speed': lambda x: x >= 0,
-    }
-    for col, rule in rules.items():
-        if col in df.columns:
-            df = df[df[col].apply(rule)]
+import pandas as pd
+
+
+
+MANDATORY_COLUMNS = [
+    'id', 'chassis_id', 'name',
+    'slug', 'sizes', 'dimension',
+    'mass', 'cargo_capacity', 'crew','speed','agility','foci',
+    'production_status','type','description','size','size','pledge_url','skus','manufacturer','loaner','link','updated_at'
+
+]
+
+DATETIME_COLUMNS = ['updated_at']
+
+
+
+def validate_ship_data(df):
+    """Validates taxi data for mandatory columns and logical checks."""
+    if df is None:
+        raise ValueError('Input DataFrame is None.')
+
+    missing_columns = [column for column in MANDATORY_COLUMNS if column not in df.columns]
+    if missing_columns:
+        raise ValueError(f'Missing mandatory columns: {missing_columns}')
+
+    df = df.copy()
+    for column in DATETIME_COLUMNS:
+        df[column] = pd.to_datetime(df[column], errors='coerce')
+
+
+
+
+
+    initial_count = len(df)
+    df = df.dropna(subset=MANDATORY_COLUMNS)
+    df = df[
+        (df['mass'] >= 0)
+        & (df['cargo_capacity'] >= 0)
+        # & (df['speed_scm'] >= 0)
+    ]
+    if df.empty:
+        raise ValueError('Validation removed all rows. Check the upstream input data.')
+
+    print(f"Validation Complete: Rows removed: {initial_count - len(df)}")
     return df
 
 def backup_validate(df):
-    """Back-up validation: fill NA and replace inf values."""
-    df = df.fillna(0)
-    df.replace([float('inf'), float('-inf')], 0, inplace=True)
+    """Sanity-check that no infinite values remain in numeric columns."""
+    df = df.copy()
+    numeric_df = df.select_dtypes(include='number')
+    if not numeric_df.empty and numeric_df.isin([float('inf'), float('-inf')]).any().any():
+        raise ValueError('Infinite values detected after processing.')
+
+    print("Backup Validation Complete")
     return df

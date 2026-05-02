@@ -16,7 +16,7 @@ def read_data(file_path):
     """Reads CSV or Excel file into DataFrame."""
     print("Filepath: ", file_path)
     if file_path.endswith('.csv'):
-        return pd.read_csv(file_path,sep=",")
+        return pd.read_csv(file_path)
     elif file_path.endswith('.xlsx'):
         return pd.read_excel(file_path)
     else:
