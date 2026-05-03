@@ -23,3 +23,17 @@ def run_ship_pipeline(local_input_path, local_output_path, azure_conn_str, conta
     write_local(df, local_output_path)
     # write_azure(local_output_path, azure_conn_str, container_name)
     return "Success"
+
+# For testing without airflow
+if __name__ == "__main__":
+    input_folder = "./input"
+    output_folder = "./output"
+    api_url = "https://api.star-citizen.wiki/api/shipmatrix/vehicles?page[size]=100"
+    file_name = "api_ships.csv"
+    azure_conn_str = ""
+    container_name = ""
+
+    local_input_path = os.path.join(input_folder, file_name).replace("\\", "/")
+    local_output_path = os.path.join(output_folder, file_name).replace("\\", "/")
+
+    run_ship_pipeline(local_input_path, local_output_path, azure_conn_str, container_name)
