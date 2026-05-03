@@ -1,6 +1,6 @@
 import os
 
-import pandas as pd
+import pyarrow.parquet as pq
 
 def read_taxi_data(local_input_path):
     """Reads taxi data from a parquet file."""
@@ -8,4 +8,5 @@ def read_taxi_data(local_input_path):
         raise FileNotFoundError(f'Input file not found: {local_input_path}')
 
     print("Reading Complete")
-    return pd.read_parquet(local_input_path)
+    table = pq.read_table(local_input_path)
+    return table.to_pandas()

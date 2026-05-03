@@ -44,7 +44,7 @@ def monitor_folder(input_folder, output_folder, azure_conn_str, container_name, 
 if __name__ == "__main__":
     input_folder = "./input"
     output_folder = "./output"
-    api_url = "https://api.star-citizen.wiki/api/shipmatrix/vehicles"
+    api_url = "https://api.star-citizen.wiki/api/shipmatrix/vehicles?page[size]=100"
     file_name = "api_ships.csv"
     azure_conn_str = ""
     container_name = ""

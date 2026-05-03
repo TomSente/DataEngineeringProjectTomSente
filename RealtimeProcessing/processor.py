@@ -46,7 +46,5 @@ def process_data(df):
 
     df = df.drop(columns = ["manufacturer","agility"])
 
-    # df['speed_ratio'] = df['afterburner_speed'] / df['scm_speed'].replace(0, 1)
-    # df = df.drop_duplicates()
     print("DataFrame columns:", list(df.columns))
     return df
