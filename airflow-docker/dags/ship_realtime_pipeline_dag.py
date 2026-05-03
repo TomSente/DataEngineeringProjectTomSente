@@ -15,7 +15,7 @@ sys.path.insert(0, REALTIME_ROOT)
 from ship_pipeline import run_ship_pipeline
 
 INPUT_PATH = os.path.join(REALTIME_ROOT, "input", "api_ships.csv")
-OUTPUT_PATH = os.path.join(REALTIME_ROOT, "output", "api_ships.csv")
+OUTPUT_PATH = os.path.join(REALTIME_ROOT, "output", "api_ships_processed.csv")
 
 
 def input_file_exists(file_path):
