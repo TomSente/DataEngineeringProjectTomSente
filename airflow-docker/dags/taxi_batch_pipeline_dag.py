@@ -31,7 +31,7 @@ with DAG(
     catchup=False,
     tags=["batch", "taxi"],
 ) as dag:
-    PythonOperator(
+    process_yellow_taxi_data = PythonOperator(
         task_id="process_yellow_taxi_data",
         python_callable=run_taxi_pipeline,
         op_kwargs={
