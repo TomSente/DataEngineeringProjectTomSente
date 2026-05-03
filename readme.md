@@ -64,7 +64,7 @@ In the Airflow UI, you should see these DAGs:
 
 Trigger `taxi_batch_pipeline` to process the taxi parquet file from [BatchProcessing/input](BatchProcessing/input) and write the processed result to [BatchProcessing/output](BatchProcessing/output).
 
-Trigger `ship_realtime_pipeline` to fetch ship data from the API, process it, and write the output to [RealtimeProcessing/output](RealtimeProcessing/output).
+Trigger `ship_realtime_pipeline` to start monitoring [RealtimeProcessing/input] folder to process it, and write the output to [RealtimeProcessing/output](RealtimeProcessing/output).
 
 ## Useful Notes
 
