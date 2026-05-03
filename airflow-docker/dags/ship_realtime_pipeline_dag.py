@@ -1,9 +1,10 @@
-from datetime import datetime, timedelta
+from datetime import timedelta
 import os
 import sys
 
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.sensors.python import PythonSensor
 
 PROJECT_ROOT = "/opt/airflow/project"
 REALTIME_ROOT = os.path.join(PROJECT_ROOT, "RealtimeProcessing")
@@ -15,8 +16,10 @@ from ship_pipeline import run_ship_pipeline
 
 INPUT_PATH = os.path.join(REALTIME_ROOT, "input", "api_ships.csv")
 OUTPUT_PATH = os.path.join(REALTIME_ROOT, "output", "api_ships.csv")
-API_URL = "https://api.star-citizen.wiki/api/shipmatrix/vehicles?page[size]=100"
 
+
+def input_file_exists(file_path):
+    return os.path.isfile(file_path)
 
 default_args = {
     "owner": "airflow",
@@ -29,12 +32,19 @@ with DAG(
     dag_id="ship_realtime_pipeline",
     default_args=default_args,
     description="Real-time ship data pipeline",
-    schedule=timedelta(minutes=5),
-    start_date=datetime(2025, 5, 4),
+    schedule=None,
     catchup=False,
     tags=["realtime", "ship"],
 ) as dag:
-    PythonOperator(
+    wait_for_ship_file = PythonSensor(
+        task_id="wait_for_api_ships_file",
+        python_callable=input_file_exists,
+        op_kwargs={"file_path": INPUT_PATH},
+        poke_interval=5,
+        mode="poke",
+    )
+
+    process_ship_data_task = PythonOperator(
         task_id="process_ship_data",
         python_callable=run_ship_pipeline,
         op_kwargs={
@@ -42,6 +52,11 @@ with DAG(
             "local_output_path": OUTPUT_PATH,
             "azure_conn_str": "",
             "container_name": "",
-            "api_url": API_URL,
         },
     )
+
+    wait_for_ship_file >> process_ship_data_task
+
+
+
+

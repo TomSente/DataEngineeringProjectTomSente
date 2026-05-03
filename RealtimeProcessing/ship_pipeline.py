@@ -5,8 +5,7 @@ from validator import validate_ship_data, backup_validate
 from processor import process_ship_data
 from writer import write_local, write_azure
 
-def run_ship_pipeline(local_input_path, local_output_path, azure_conn_str, container_name, api_url):
-    fetch_and_save_data(api_url, local_input_path)
+def run_ship_pipeline(local_input_path, local_output_path, azure_conn_str, container_name):
 
     # --- READER ---
     df = read_ship_data(local_input_path)
@@ -37,5 +36,4 @@ if __name__ == "__main__":
     local_input_path = os.path.join(input_folder, file_name).replace("\\", "/")
     local_output_path = os.path.join(output_folder, file_name).replace("\\", "/")
 
-    fetch_and_save_data(api_url, local_input_path)
     run_ship_pipeline(local_input_path, local_output_path, azure_conn_str, container_name)
