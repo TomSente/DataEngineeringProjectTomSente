@@ -11,9 +11,8 @@ def parse(value):
             return {}
     return {}
 
-def process_data(df):
+def process_ship_data(df):
     """Creates extra columns and removes duplicates."""
-    # Example extra columns
     print("DataFrame columns:", list(df.columns))
     df['crew_min'] = df['crew'].apply(lambda x: parse(x).get("min"))
     df['crew_max'] = df['crew'].apply(lambda x: parse(x).get("max"))
@@ -29,8 +28,6 @@ def process_data(df):
     df["description"] = df["description"].apply(lambda x: parse(x).get("en_EN"))
 
     df["size"] = df["size"].apply(lambda x: parse(x).get("en_EN"))
-
-
 
     df["manufacturer_code"] = df["manufacturer"].apply(lambda x: parse(x).get("code"))
 

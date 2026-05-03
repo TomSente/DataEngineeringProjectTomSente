@@ -15,7 +15,7 @@ DATETIME_COLUMNS = ['updated_at']
 
 
 def validate_ship_data(df):
-    """Validates taxi data for mandatory columns and logical checks."""
+    """Validates ship data for mandatory columns and logical checks."""
     if df is None:
         raise ValueError('Input DataFrame is None.')
 
@@ -24,11 +24,9 @@ def validate_ship_data(df):
         raise ValueError(f'Missing mandatory columns: {missing_columns}')
 
     df = df.copy()
+    # Parsing valid date string to timestamps, invalid or empty becomes missing values.
     for column in DATETIME_COLUMNS:
         df[column] = pd.to_datetime(df[column], errors='coerce')
-
-
-
 
 
     initial_count = len(df)
@@ -36,7 +34,6 @@ def validate_ship_data(df):
     df = df[
         (df['mass'] >= 0)
         & (df['cargo_capacity'] >= 0)
-        # & (df['speed_scm'] >= 0)
     ]
     if df.empty:
         raise ValueError('Validation removed all rows. Check the upstream input data.')
