@@ -23,11 +23,3 @@ def run_taxi_pipeline(local_input_path, local_output_path, azure_conn_str, conta
     # write_azure(local_output_path, azure_conn_str, container_name)
     return "Success"
 
-# For testing without airflow
-if __name__ == "__main__":
-    input_folder = "./input/yellow_tripdata_2025-01.parquet"
-    output_folder = "./output/yellow_tripdata_2025-01_processed.parquet"
-    file_name = "api_ships.csv"
-    azure_conn_str = ""
-    container_name = ""
-    run_taxi_pipeline(input_folder, output_folder, azure_conn_str, container_name)
