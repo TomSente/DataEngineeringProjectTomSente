@@ -39,7 +39,7 @@ def process_ship_data(df):
 
     df["speed"] = df["speed"].apply(lambda x: parse(x).get("scm"))
 
-    df.rename(columns={"msrp":"manufacturer_suggested_retail_price"},inplace=True)
+    df.rename(columns={"msrp":"manufacturer_suggested_retail_price","speed":"space_combat_maneuvering_speed"},inplace=True)
 
     df = df.drop(columns = ["manufacturer","agility"])
 

@@ -7,7 +7,7 @@ def fetch_and_save_data(api_url, download_path):
     response = requests.get(api_url)
     response.raise_for_status()
     data = response.json()
-    # If the API returns a dict with a key containing the list, adjust as needed
+    # If the API returns a dict with a key containing the list
     if isinstance(data, dict) and "data" in data:
         data = data["data"]
     df = pd.DataFrame(data)

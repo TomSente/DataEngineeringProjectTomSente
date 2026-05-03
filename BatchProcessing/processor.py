@@ -13,7 +13,8 @@ def process_taxi_data(df):
 
     # Creation of average_speed column
     df['average_speed_mph'] = np.where(
-        df['trip_duration_minutes'] > 0, 
+        df['trip_duration_minutes'] > 0,
+
         df['trip_distance'] / (df['trip_duration_minutes'] / 60), 
         0
     )
@@ -27,6 +28,7 @@ def process_taxi_data(df):
     # Creation of revenue_per_mile column
     df['revenue_per_mile'] = np.where(
         df['trip_distance'] > 0, 
+        
         df['total_amount'] / df['trip_distance'], 
         0
     )

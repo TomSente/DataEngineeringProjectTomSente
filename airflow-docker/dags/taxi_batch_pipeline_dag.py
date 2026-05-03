@@ -19,7 +19,7 @@ OUTPUT_PATH = os.path.join(BATCH_ROOT, "output", "yellow_tripdata_2025-01_proces
 
 default_args = {
     "owner": "student",
-    "start_date": datetime(2025, 1, 1),
+    "start_date": datetime(2025, 5, 4),
     "retries": 2,
     "retry_delay": timedelta(minutes=5),
 }
